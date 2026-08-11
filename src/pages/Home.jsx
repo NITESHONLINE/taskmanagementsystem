@@ -1,41 +1,88 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Product from '../components/Product'
 import Addproduct from '../components/Addproduct'
+import { MdDelete } from 'react-icons/md'
 
 // import component => ctrl + spacebar 
 
 const Home = () => {
 
-    const product = [
+    const initialProduct = [
         {
             name: "Apple",
             price: 200,
             description: "Best apple",
-            image: "http//;asdfdsf"
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXGUJvBVVX6SjlOM7qVU56vxynAuxuUQS_F3yzIl5qKQ&s=10"
         },
         {
-            name: "Apple",
+            name: "Banana",
             price: 200,
             description: "Best apple",
-            image: "http//;asdfdsf"
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxuOB_Wzij3-kmoyO4VBubVNPlPDMvS0JM5GsjWO6-ew&s=10"
         },
-    ]
-
-    const singledata = {
+        {
             name: "Orange",
             price: 200,
             description: "Best orange",
+            image: "https://www.quanta.org/thumbs/thumb-orange-640x480-orange.jpg"
+        },
+        {
+            name: "Orange",
+            price: 200,
+            description: "Best orange",
+            image: "https://www.quanta.org/thumbs/thumb-orange-640x480-orange.jpg"
+        }
+    ]
+
+    const [product, setProduct] = useState(initialProduct)
+
+  const dataFromLocastorage = JSON.parse(localStorage.getItem("product"))
+
+
+    const handleProductAdd = (singleProduct) => { 
+        const updatedData = [singleProduct, ...product] 
+        setProduct(updatedData)
+console.log(updatedData) 
+localStorage.setItem("product", JSON.stringify(updatedData)) 
     }
 
-  return (
-    <>
+    const deleteAllProduct = () => {
+        localStorage.clear();
+        location.reload()
+    }
 
-    <Addproduct/>
+    const handleDeleteProduct = (i) => {
+        const allData = JSON.parse(localStorage.getItem('product'));
+        allData.splice(i,1)
+        console.log("product index",i)
+        localStorage.setItem("product", JSON.stringify(allData))
+        setProduct(allData)
+    }
 
-    <Product data={product}/>
+    return (
+        <>
 
-    </>
-  )
+            <Addproduct addproduct={handleProductAdd} />
+
+            <button onClick={deleteAllProduct}>Delete All</button>
+
+            {/* <Product data={product}/> */}
+            <section className='grid grid-cols-4 gap-4 mx-20'>
+                {dataFromLocastorage?.map((product, i) => (
+                    <div key={i} className='border border-gray-400 p-2 rounded'>
+                        <img src={product?.image} alt="" width="150" className='rounded' />
+                        <h1>{product?.title}</h1>
+                        <h3>{product?.price}</h3>
+                        <p>{product?.description}</p>
+                        <button onClick={()=>handleDeleteProduct(i)}><MdDelete /></button>
+                    </div>
+                ))}
+            </section>
+
+
+
+        </>
+    )
 }
 
 export default Home

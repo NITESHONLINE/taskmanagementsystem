@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Addproduct = () => {
+const Addproduct = ({addproduct}) => {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -13,6 +13,7 @@ const Addproduct = () => {
     const singleProduct = {name, price, description, image}
     console.log(singleProduct)
 
+    addproduct(singleProduct)
   }
  
 
