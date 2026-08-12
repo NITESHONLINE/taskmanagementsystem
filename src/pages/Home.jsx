@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Product from '../components/Product'
 import Addproduct from '../components/Addproduct'
 import { MdDelete } from 'react-icons/md'
+import { Link } from 'react-router'
 
 // import component => ctrl + spacebar 
 
@@ -70,11 +71,15 @@ localStorage.setItem("product", JSON.stringify(updatedData))
             <section className='grid grid-cols-4 gap-4 mx-20'>
                 {dataFromLocastorage?.map((product, i) => (
                     <div key={i} className='border border-gray-400 p-2 rounded'>
+                       <Link to={`/${i}`}>
                         <img src={product?.image} alt="" width="150" className='rounded' />
+                       </Link>
+                        <h1>{product?.name}</h1>
                         <h1>{product?.title}</h1>
                         <h3>{product?.price}</h3>
                         <p>{product?.description}</p>
                         <button onClick={()=>handleDeleteProduct(i)}><MdDelete /></button>
+                        <Link to={`/edit/${i}`} className='bg-blue-400 text-white'>Edit</Link>
                     </div>
                 ))}
             </section>

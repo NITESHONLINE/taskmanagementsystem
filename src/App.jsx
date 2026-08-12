@@ -7,17 +7,23 @@ import { Route, Routes } from 'react-router'
 import Home from './pages/Home'
 import Contact from './pages/Contact'
 import Layout from './components/Layout/Layout'
+import UseEffect from './pages/UseEffect'
+import ProductView from './pages/ProductView'
+import EditProduct from './pages/EditProduct'
 
 function App() {
 
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/edit/:id' element={<EditProduct />} />
+          <Route path='/:id' element={<ProductView />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path='/useeffect' element={<UseEffect />} />
         </Routes>
-      </Layout>
+      {/* </Layout> */}
     </>
   )
 }
