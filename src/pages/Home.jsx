@@ -3,6 +3,7 @@ import Product from '../components/Product'
 import Addproduct from '../components/Addproduct'
 import { MdDelete } from 'react-icons/md'
 import { Link } from 'react-router'
+import { useGetProductQuery } from '../services/productApi'
 
 // import component => ctrl + spacebar 
 
@@ -10,7 +11,7 @@ const Home = () => {
 
     const initialProduct = [
         {
-            name: "Apple",
+            name: "Banana",
             price: 200,
             description: "Best apple",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXGUJvBVVX6SjlOM7qVU56vxynAuxuUQS_F3yzIl5qKQ&s=10"
@@ -35,9 +36,33 @@ const Home = () => {
         }
     ]
 
-    const [product, setProduct] = useState(initialProduct)
+    const [product, setProduct] = useState(()=>{
+        const data = JSON.parse(localStorage.getItem('product'))
+        return data ? data : initialProduct
+    })
 
-  const dataFromLocastorage = JSON.parse(localStorage.getItem("product"))
+    const {data} = useGetProductQuery();
+
+    console.log("data from api",data)
+
+
+    const [search, setSearch] = useState("")
+
+//   const dataFromLocastorage = JSON.parse(localStorage.getItem("product"))
+
+ 
+console.log("search value", search)
+
+
+const filterData = product.filter((product)=>{
+    const searchData = product.name
+    .toLowerCase()
+    .includes(search.toLowerCase())
+
+    
+    return searchData
+})
+
 
 
     const handleProductAdd = (singleProduct) => { 
@@ -67,14 +92,21 @@ localStorage.setItem("product", JSON.stringify(updatedData))
 
             <button onClick={deleteAllProduct}>Delete All</button>
 
+        <input 
+        type="search"
+        value={search}
+        onChange={(e)=> setSearch(e.target.value)}
+         />
+
             {/* <Product data={product}/> */}
             <section className='grid grid-cols-4 gap-4 mx-20'>
-                {dataFromLocastorage?.map((product, i) => (
+                {/* {filterData?.map((product, i) => ( */}
+                {data?.products?.map((product, i) => (
                     <div key={i} className='border border-gray-400 p-2 rounded'>
                        <Link to={`/${i}`}>
-                        <img src={product?.image} alt="" width="150" className='rounded' />
+                        <img src={product?.images[0]} alt="" width="150" className='rounded' />
                        </Link>
-                        <h1>{product?.name}</h1>
+                        {/* <h1>{product?.name}</h1> */}
                         <h1>{product?.title}</h1>
                         <h3>{product?.price}</h3>
                         <p>{product?.description}</p>
